@@ -1,4 +1,3 @@
-from fileinput import filename
 import random
 import pickle
 from tkinter import filedialog, ttk
@@ -218,8 +217,13 @@ def buildFrameGroup(
 
 
 # small save to .txt
-def saveNPC(NPC: RandomNPC):
+def exportNPCToText(NPC: RandomNPC):
     savePath = os.path.join((os.path.dirname(__file__)), "Saved_Files")
+    isExist = os.path.exists(savePath)
+    if not isExist:
+        os.makedirs(savePath)
+
+    savePath = os.path.join(savePath, "NPC Exported Text")
     isExist = os.path.exists(savePath)
     if not isExist:
         os.makedirs(savePath)
@@ -282,17 +286,6 @@ root.geometry(WINDOW_SIZE)
 root.resizable(False, False)
 root.title("NPC Generator")
 
-# menu
-root.option_add("*tearOff", False)
-menubar = Menu(root)
-root.config(menu=menubar)
-file = Menu(menubar)
-menubar.add_cascade(menu=file, label="File")
-file.add_command(label="Save", command=lambda: pickleNPC(NPC))
-file.add_command(label="Load...", command=lambda: loadNPC(NPC, entryDict))
-file.add_command(label="Export as .txt file", command=lambda: saveNPC(NPC))
-
-
 topFrame = createFrames(root, WINDOW_WIDTH, WINDOW_HEIGHT // 10)
 topFrame.pack()
 panedwindow = ttk.Panedwindow(root, orient=HORIZONTAL)
@@ -304,6 +297,15 @@ panedwindow.add(diceFrame)
 panedwindow.add(labelFrame)
 panedwindow.add(infoFrame, weight=4)
 
+# menu
+root.option_add("*tearOff", False)
+menubar = Menu(root)
+root.config(menu=menubar)
+file = Menu(menubar)
+menubar.add_cascade(menu=file, label="File")
+file.add_command(label="Save", command=lambda: pickleNPC(NPC))
+file.add_command(label="Load...", command=lambda: loadNPC(NPC, entryDict))
+file.add_command(label="Export as .txt file", command=lambda: exportNPCToText(NPC))
 
 # assets
 diceIcon = PhotoImage(file="assets/dice.gif")
