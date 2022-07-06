@@ -1,0 +1,8 @@
+/__pycache__
+/Saved_Files
+.DS_Store
+.vscode/
+authentication.js
+notes/
+**/*-todo.md
+practice.py
