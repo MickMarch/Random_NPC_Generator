@@ -6,6 +6,13 @@ Data is stored in a python file.
 
 You can reroll each stat individually, or all at once. There is save function.
 
+# Before Running:
+
+You must have Tkinter installed. In your terminal, type:
+```
+pip3 install tk
+```
+
 # What I Learned
 
 - Classes and class functions
