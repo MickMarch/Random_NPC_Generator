@@ -1,11 +1,13 @@
+from fileinput import filename
 import random
-import os
-
-os.chdir(os.path.dirname(__file__))
-from tkinter import ttk
+import pickle
+from tkinter import filedialog, ttk
 from tkinter import *
 from data import *
 from datetime import datetime
+import os
+
+os.chdir(os.path.dirname(__file__))
 
 
 TERMINAL_SPACING = 30
@@ -243,6 +245,30 @@ Carrying: {NPC.carrying}"""
         f.write(character_info)
 
 
+def pickleNPC(NPC: RandomNPC):
+    savePath = os.path.join((os.path.dirname(__file__)), "Saved_Files")
+    isExist = os.path.exists(savePath)
+    if not isExist:
+        os.makedirs(savePath)
+
+    file_name = f"{NPC.fullName}.npc"
+    with open(os.path.join(savePath, file_name), "wb") as file:
+        pickle.dump(NPC, file)
+
+
+def loadNPC(NPC: RandomNPC, entryDict: dict):
+    file_name = filedialog.askopenfile().name
+    with open(file_name, "rb") as file:
+        loaded_NPC = pickle.load(file)
+
+    NPC = loaded_NPC
+    for stat in entryDict:
+        entryDict[stat].state(["!readonly"])
+        entryDict[stat].delete(0, END)
+        entryDict[stat].insert(0, NPC.callStat(stat))
+        entryDict[stat].state(["!readonly"])
+
+
 """
 main body
 """
@@ -262,7 +288,9 @@ menubar = Menu(root)
 root.config(menu=menubar)
 file = Menu(menubar)
 menubar.add_cascade(menu=file, label="File")
-file.add_command(label="Save", command=lambda: saveNPC(NPC))
+file.add_command(label="Save", command=lambda: pickleNPC(NPC))
+file.add_command(label="Load...", command=lambda: loadNPC(NPC, entryDict))
+file.add_command(label="Export as .txt file", command=lambda: saveNPC(NPC))
 
 
 topFrame = createFrames(root, WINDOW_WIDTH, WINDOW_HEIGHT // 10)
