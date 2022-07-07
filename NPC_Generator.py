@@ -187,7 +187,7 @@ def rerollStat(NPC: RandomNPC, stat: str, entry: ttk.Entry):
     entry.state(["!readonly"])
     entry.delete(0, END)
     entry.insert(0, NPC.callStat(stat))
-    entry.state(["!readonly"])
+    entry.state(["readonly"])
 
 
 def rerollAll(NPC: RandomNPC, entryDict: dict):
@@ -196,7 +196,7 @@ def rerollAll(NPC: RandomNPC, entryDict: dict):
         entryDict[stat].state(["!readonly"])
         entryDict[stat].delete(0, END)
         entryDict[stat].insert(0, NPC.callStat(stat))
-        entryDict[stat].state(["!readonly"])
+        entryDict[stat].state(["readonly"])
 
 
 def buildFrameGroup(
@@ -270,7 +270,7 @@ def loadNPC(NPC: RandomNPC, entryDict: dict):
         entryDict[stat].state(["!readonly"])
         entryDict[stat].delete(0, END)
         entryDict[stat].insert(0, NPC.callStat(stat))
-        entryDict[stat].state(["!readonly"])
+        entryDict[stat].state(["readonly"])
 
 
 """
