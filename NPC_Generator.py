@@ -223,6 +223,37 @@ class NPCGeneratorWindow:
                 textbox_dict[k].replace(1.0, "end", loaded_NPC[k])
                 textbox_dict[k].config(state="disabled")
 
+        def exportNPCToText(NPC: RandomNPC):
+            savePath = os.path.join((os.path.dirname(__file__)), "Saved_Files")
+            isExist = os.path.exists(savePath)
+            if not isExist:
+                os.makedirs(savePath)
+
+            savePath = os.path.join(savePath, "NPC Exported Text")
+            isExist = os.path.exists(savePath)
+            if not isExist:
+                os.makedirs(savePath)
+
+            character_info = f"""Character Name: {NPC.fullName}
+Age: {NPC.age}
+Hair: {NPC.hair}
+Build: {NPC.build}
+Gender: {NPC.pronoun}
+
+Description: {NPC.description}
+
+Wants/Needs: {NPC.wants_needs}
+
+Secrets/Obstacle: {NPC.secrets_obstacles}
+
+Carrying: {NPC.carrying}"""
+
+            date = datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            title_name = f"{NPC.firstName}-{NPC.lastName}_{date}.txt"
+
+            with open(os.path.join(savePath, title_name), "w") as f:
+                f.write(character_info)
+
         self.NPC = RandomNPC()
         self.NPC_frame = ttk.Frame(master)
         self.NPC_frame.pack()
@@ -280,41 +311,12 @@ class NPCGeneratorWindow:
         self.file.add_command(
             label="Load...", command=lambda: loadNPC(self.textbox_dict)
         )
+        self.file.add_command(
+            label="Export as .txt file", command=lambda: exportNPCToText(self.NPC)
+        )
 
 
 root = Tk()
 npc_generator = NPCGeneratorWindow(root)
 
 root.mainloop()
-
-# # small save to .txt
-# def exportNPCToText(NPC: RandomNPC):
-#     savePath = os.path.join((os.path.dirname(__file__)), "Saved_Files")
-#     isExist = os.path.exists(savePath)
-#     if not isExist:
-#         os.makedirs(savePath)
-
-#     savePath = os.path.join(savePath, "NPC Exported Text")
-#     isExist = os.path.exists(savePath)
-#     if not isExist:
-#         os.makedirs(savePath)
-
-#     character_info = f"""Character Name: {NPC.fullName}
-# Age: {NPC.age}
-# Hair: {NPC.hair}
-# Build: {NPC.build}
-# Gender: {NPC.pronoun}
-
-# Description: {NPC.description}
-
-# Wants/Needs: {NPC.wants_needs}
-
-# Secrets/Obstacle: {NPC.secrets_obstacles}
-
-# Carrying: {NPC.carrying}"""
-
-#     date = datetime.now().strftime("%Y-%m-%d-%H%M%S")
-#     title_name = f"{NPC.firstName}-{NPC.lastName}_{date}.txt"
-
-#     with open(os.path.join(savePath, title_name), "w") as f:
-#         f.write(character_info)
