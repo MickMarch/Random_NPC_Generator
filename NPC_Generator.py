@@ -321,7 +321,12 @@ Carrying: {NPC.carrying}"""
         )
 
 
-root = Tk()
-npc_generator = NPCGeneratorWindow(root)
+def main():
 
-root.mainloop()
+    root = Tk()
+    npc_generator = NPCGeneratorWindow(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
