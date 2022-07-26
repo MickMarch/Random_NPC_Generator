@@ -199,9 +199,9 @@ class NPCGeneratorWindow:
                 command=lambda: rerollStat(NPC, stat, textbox),
             )
             label = createLabel(root, stat)
-            button.grid(row=row_index, column=0, padx=10, sticky="w")
-            label.grid(row=row_index, column=1, padx=10, sticky="e")
-            textbox.grid(row=row_index, column=2)
+            label.grid(row=row_index, column=0, padx=10, sticky="e")
+            textbox.grid(row=row_index, column=1)
+            button.grid(row=row_index, column=2, padx=10, sticky="w")
             return textbox
 
         def saveNPC():
