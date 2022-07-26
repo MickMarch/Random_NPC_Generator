@@ -10,8 +10,8 @@ os.chdir(os.path.dirname(__file__))
 
 
 TERMINAL_SPACING = 30
-WINDOW_HEIGHT = 600
-WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 530
+WINDOW_WIDTH = 600
 WINDOW_X_SHIFT = 350
 WINDOW_Y_SHIFT = 80
 WINDOW_SIZE = (
@@ -144,41 +144,46 @@ class NPCGeneratorWindow:
             textbox = Text(root, width=width, height=height)
             textbox.insert(1.0, NPC.callStat(stat))
             textbox.config(wrap="word", state="disabled")
+            textbox.tag_configure("center text", justify="center", font=("Arial", 13))
+            textbox.tag_add("center text", 1.0, "end")
             return textbox
 
         def createLabel(root, stat: str):
             if stat == "FULLNAME":
-                return ttk.Label(root, text="Name: ")
+                return ttk.Label(root, text="Name: ", font=("Arial Black", 13))
 
             elif stat == "AGE":
-                return ttk.Label(root, text="Age: ")
+                return ttk.Label(root, text="Age: ", font=("Arial Black", 13))
 
             elif stat == "HAIR":
-                return ttk.Label(root, text="Hair: ")
+                return ttk.Label(root, text="Hair: ", font=("Arial Black", 13))
 
             elif stat == "BUILD":
-                return ttk.Label(root, text="Build: ")
+                return ttk.Label(root, text="Build: ", font=("Arial Black", 13))
 
             elif stat == "PRONOUN":
-                return ttk.Label(root, text="Pronoun: ")
+                return ttk.Label(root, text="Pronoun: ", font=("Arial Black", 13))
 
             elif stat == "DESCRIPTION":
-                return ttk.Label(root, text="Description: ")
+                return ttk.Label(root, text="Description: ", font=("Arial Black", 13))
 
             elif stat == "WANTSNEEDS":
-                return ttk.Label(root, text="Wants/Needs: ")
+                return ttk.Label(root, text="Wants/Needs: ", font=("Arial Black", 13))
 
             elif stat == "SECRETS":
-                return ttk.Label(root, text="Secrets/Obstacles: ")
+                return ttk.Label(
+                    root, text="Secrets/Obstacles: ", font=("Arial Black", 13)
+                )
 
             elif stat == "CARRYING":
-                return ttk.Label(root, text="Carrying: ")
+                return ttk.Label(root, text="Carrying: ", font=("Arial Black", 13))
 
         def rerollStat(NPC: RandomNPC, stat: str, textbox: Text):
             NPC.rerollStats(stat)
             textbox.config(state="normal")
             textbox.replace(1.0, "end", NPC.callStat(stat))
             textbox.config(state="disabled")
+            textbox.tag_add("center text", 1.0, "end")
 
         def rerollAll(NPC: RandomNPC, textbox_dict: dict):
             for stat in textbox_dict:
@@ -194,8 +199,8 @@ class NPCGeneratorWindow:
                 command=lambda: rerollStat(NPC, stat, textbox),
             )
             label = createLabel(root, stat)
-            button.grid(row=row_index, column=0)
-            label.grid(row=row_index, column=1)
+            button.grid(row=row_index, column=0, padx=10, sticky="w")
+            label.grid(row=row_index, column=1, padx=10, sticky="e")
             textbox.grid(row=row_index, column=2)
             return textbox
 
@@ -299,7 +304,7 @@ Carrying: {NPC.carrying}"""
             compound=LEFT,
             command=lambda: rerollAll(self.NPC, self.textbox_dict),
         )
-        self.reroll_all_button.grid(row=0, column=0, columnspan=3)
+        self.reroll_all_button.grid(row=0, column=0, columnspan=3, pady=15)
 
         # Menu option creation
         master.option_add("*tearOff", False)
