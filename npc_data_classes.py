@@ -53,6 +53,7 @@ class NpcData:
         )
         self.races = NpcSingleAttribute("Race", self.npc_data_dict["races"])
         self.pronouns = NpcSingleAttribute("Pronoun", self.npc_data_dict["pronouns"])
+        self.builds = NpcSingleAttribute("Build", self.npc_data_dict["builds"])
         self.ages = NpcSingleAttribute("Age", self.npc_data_dict["ages"])
         self.hairstyles = NpcSingleAttribute(
             "Hairstyle", self.npc_data_dict["hairstyles"]
@@ -70,6 +71,7 @@ class NpcData:
             self.names,
             self.races,
             self.pronouns,
+            self.builds,
             self.ages,
             self.hairstyles,
             self.details,

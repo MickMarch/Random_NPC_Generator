@@ -10,6 +10,18 @@
         "Half-Orc",
         "Elf"
     ],
+    "builds": [
+        "Tall and lean",
+        "Tall and ripped",
+        "Tall and rotund",
+        "Medium Height and build",
+        "Medium Height and slim",
+        "Medium Height and out of shape",
+        "Short and thin",
+        "Short and sturdy",
+        "Short and stout",
+        "Sickly (Roll again)"
+    ],
     "pronouns": [
         "She/Her/Hers",
         "He/Him/His",

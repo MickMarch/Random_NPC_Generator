@@ -319,10 +319,10 @@ Carrying: {NPC.carrying}"""
         self.file.add_command(
             label="Export as .txt file", command=lambda: exportNPCToText(self.NPC)
         )
+        print(self.diceIcon)
 
 
 def main():
-
     root = Tk()
     npc_generator = NPCGeneratorWindow(root)
     root.mainloop()
