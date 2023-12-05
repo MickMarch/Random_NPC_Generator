@@ -97,4 +97,5 @@ class NpcGenerator(tk.Tk):
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
 
     def update_npc(self) -> None:
+        # TODO consider moving all textbox updates here
         pass
