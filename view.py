@@ -18,7 +18,7 @@ DIMENSIONS = (
 )
 
 
-class View(tk.Tk):
+class NpcGenerator(tk.Tk):
     def __init__(self, model: Model) -> None:
         super().__init__()
         self.model = model

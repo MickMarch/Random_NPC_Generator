@@ -8,7 +8,7 @@ class NpcAttribute:
         self.attribute_list: list[str] = ...
         self.current_attribute: str = ...
 
-    def get_new_attribute(self) -> None:
+    def randomize_attribute(self) -> None:
         pass
 
 
@@ -16,9 +16,9 @@ class NpcSingleAttribute(NpcAttribute):
     def __init__(self, attribute_name: str, attribute_list: list[str]) -> None:
         self.attribute_name = attribute_name
         self.attribute_list = attribute_list
-        self.get_new_attribute()
+        self.randomize_attribute()
 
-    def get_new_attribute(self) -> None:
+    def randomize_attribute(self) -> None:
         self.current_attribute = random.choice(self.attribute_list)
 
 
@@ -32,9 +32,9 @@ class NpcCombinedAttribute(NpcAttribute):
         self.attribute_name = attribute_name
         self.attribute_list_1 = attribute_list_1
         self.attribute_list_2 = attribute_list_2
-        self.get_new_attribute()
+        self.randomize_attribute()
 
-    def get_new_attribute(self) -> None:
+    def randomize_attribute(self) -> None:
         self.current_attribute = (
             random.choice(self.attribute_list_1)
             + " "

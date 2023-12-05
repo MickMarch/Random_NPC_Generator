@@ -8,12 +8,15 @@ class Model:
     def get_attribute(self, attribute: NpcAttribute) -> str:
         return attribute.current_attribute
 
-    def set_new_attribute(self, attribute: NpcAttribute) -> None:
-        attribute.get_new_attribute()
+    def set_new_attribute(self, attribute: NpcAttribute, new_attribute_text: str):
+        attribute.current_attribute = new_attribute_text
 
-    def set_all_new_attributes(self) -> None:
+    def set_rand_new_attribute(self, attribute: NpcAttribute) -> None:
+        attribute.randomize_attribute()
+
+    def set_all_rand_new_attributes(self) -> None:
         for attribute in self.npc.all_attributes:
-            attribute.get_new_attribute()
+            attribute.randomize_attribute()
 
     def get_all_attributes(self) -> dict[str, str]:
         return {
