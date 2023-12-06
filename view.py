@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import Text, ttk, PhotoImage
 
-from typing import List, Union, Callable, Any
+from typing import List, Union, Callable, Any, Dict
 
 from model import Model, NpcAttribute
 
@@ -45,18 +45,10 @@ class NpcGenerator(tk.Tk):
         textbox.tag_add("center text", 1.0, "end")
         return textbox
 
-    def _create_reroll_button(self, root: ttk.Frame) -> ttk.Button:
+    def _create_button(self, root: ttk.Frame, button_text: str) -> ttk.Button:
         return ttk.Button(
             root,
-            text=" Re-Roll",
-            image=self.BUTTON_IMAGE,
-            compound="left",
-        )
-
-    def _create_reroll_all_button(self, root: ttk.Frame) -> ttk.Button:
-        return ttk.Button(
-            root,
-            text=" Re-Roll Everything",
+            text=button_text,
             image=self.BUTTON_IMAGE,
             compound="left",
         )
@@ -72,30 +64,38 @@ class NpcGenerator(tk.Tk):
         return [
             self._create_label(root, attribute),
             self._create_textbox(root, attribute),
-            self._create_reroll_button(root),
+            self._create_button(root, " Re-Roll"),
         ]
 
     def _create_reroll_all_row(self, root) -> List[ttk.Button]:
-        return self._create_reroll_all_button(root)
+        return self._create_button(root)
 
-    def _create_attribute_row_list(
+    def _create_attribute_row_dict(
         self, root, all_attributes: list[NpcAttribute]
-    ) -> List[List[Union[ttk.Label, tk.Text, ttk.Button]]]:
-        return [
-            self._create_attribute_row(root, attribute) for attribute in all_attributes
-        ]
+    ) -> Dict[str, List[Union[ttk.Label, tk.Text, ttk.Button]]]:
+        return {
+            attribute.attribute_name: self._create_attribute_row(root, attribute)
+            for attribute in all_attributes
+        }
+
+    def update_attribute(self, textbox: tk.Text, new_text: str) -> None:
+        textbox.config(state="normal")
+        textbox.replace(1.0, "end", new_text)
+        textbox.config(state="disabled")
+        textbox.tag_add("center text", 1.0, "end")
+
+    def update_npc(self, textbox_updates: list[list[tk.Text, str]]):
+        for textbox_update in textbox_updates:
+            self.update_attribute(textbox_update[0], textbox_update[1])
 
     def create_ui(self) -> None:
         npc_frame = ttk.Frame(self)
         npc_frame.pack()
+        self.all_attribute_rows_dict = self._create_attribute_row_dict(
+            npc_frame, self.model.npc.all_attributes
+        )
 
-        for row_index, row_items in enumerate(
-            self._create_attribute_row_list(npc_frame, self.model.npc.all_attributes)
-        ):
+        for row_index, row_items in enumerate(self.all_attribute_rows_dict.values()):
             row_items[0].grid(row=row_index, column=0, padx=10, sticky="e")
             row_items[1].grid(row=row_index, column=1)
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
-
-    def update_npc(self) -> None:
-        # TODO consider moving all textbox updates here
-        pass
