@@ -15,11 +15,11 @@ class Model:
         attribute.randomize_attribute()
 
     def set_all_rand_new_attributes(self) -> None:
-        for attribute in self.npc.all_attributes:
+        for attribute in self.npc.all_attributes_dict.values():
             attribute.randomize_attribute()
 
     def get_all_attributes(self) -> dict[str, str]:
         return {
-            attribute.attribute_name: attribute.current_attribute
-            for attribute in self.npc.all_attributes
+            attribute_name: attribute.current_attribute
+            for attribute_name, attribute in self.npc.all_attributes_dict.items()
         }

@@ -34,8 +34,10 @@ class NpcGenerator(tk.Tk):
         self.dimensions = DIMENSIONS
         self.create_ui()
 
-    def _create_label(self, root: ttk.Frame, attribute: NpcAttribute) -> ttk.Label:
-        return ttk.Label(root, font=LABEL_FONT, text=attribute.attribute_name)
+    def _create_label(
+        self, root: ttk.Frame, attribute_name: str, attribute: NpcAttribute
+    ) -> ttk.Label:
+        return ttk.Label(root, font=LABEL_FONT, text=attribute_name)
 
     def _create_textbox(self, root: ttk.Frame, attribute: NpcAttribute) -> tk.Text:
         textbox = Text(root, width=TEXTBOX_WIDTH, height=TEXTBOX_HEIGHT)
@@ -59,10 +61,10 @@ class NpcGenerator(tk.Tk):
         button.configure(command=callback)
 
     def _create_attribute_row(
-        self, root, attribute: NpcAttribute
+        self, root, attribute_name: str, attribute: NpcAttribute
     ) -> List[Union[ttk.Label, tk.Text, ttk.Button]]:
         return [
-            self._create_label(root, attribute),
+            self._create_label(root, attribute_name, attribute),
             self._create_textbox(root, attribute),
             self._create_button(root, " Re-Roll"),
         ]
@@ -71,11 +73,15 @@ class NpcGenerator(tk.Tk):
         return self._create_button(root)
 
     def _create_attribute_row_dict(
-        self, root, all_attributes: list[NpcAttribute]
+        self, root, all_attributes_dict: dict[str, NpcAttribute]
     ) -> Dict[str, List[Union[ttk.Label, tk.Text, ttk.Button]]]:
+        # return {
+        #     attribute.attribute_name: self._create_attribute_row(root, attribute)
+        #     for attribute in all_attributes
+        # }
         return {
-            attribute.attribute_name: self._create_attribute_row(root, attribute)
-            for attribute in all_attributes
+            attribute_name: self._create_attribute_row(root, attribute_name, attribute)
+            for attribute_name, attribute in all_attributes_dict.items()
         }
 
     def update_attribute(self, textbox: tk.Text, new_text: str) -> None:
@@ -92,7 +98,7 @@ class NpcGenerator(tk.Tk):
         npc_frame = ttk.Frame(self)
         npc_frame.pack()
         self.all_attribute_rows_dict = self._create_attribute_row_dict(
-            npc_frame, self.model.npc.all_attributes
+            npc_frame, self.model.npc.all_attributes_dict
         )
 
         for row_index, row_items in enumerate(self.all_attribute_rows_dict.values()):
