@@ -55,7 +55,7 @@ class NpcGenerator(tk.Tk):
             compound="left",
         )
 
-    def bind_reroll_button(
+    def bind_reroll_single_attribute_button(
         self, button: ttk.Button, callback: Callable[..., Any]
     ) -> None:
         button.configure(command=callback)
@@ -75,10 +75,6 @@ class NpcGenerator(tk.Tk):
     def _create_attribute_row_dict(
         self, root, all_attributes_dict: dict[str, NpcAttribute]
     ) -> Dict[str, List[Union[ttk.Label, tk.Text, ttk.Button]]]:
-        # return {
-        #     attribute.attribute_name: self._create_attribute_row(root, attribute)
-        #     for attribute in all_attributes
-        # }
         return {
             attribute_name: self._create_attribute_row(root, attribute_name, attribute)
             for attribute_name, attribute in all_attributes_dict.items()

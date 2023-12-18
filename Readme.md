@@ -3,6 +3,7 @@
     - model.py will house handle the data
     - view.py will handle the display
     - controller will handle the communications between all parts
+    - Add Stability AI to future workflow
 
 Next task: `view.py` - create GUI that can grow dynamically based on information from `model.py`.
 - Top row has a single button to be bound to a reroll all function
