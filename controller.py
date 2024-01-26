@@ -12,7 +12,7 @@ class Controller:
         for attribute_name, attribute_row in self.view.all_attribute_rows_dict.items():
             textbox = attribute_row[1]
             button = attribute_row[2]
-            callback = lambda: self.reroll_attribute(
+            callback = lambda textbox=textbox, attribute_name=attribute_name: self.reroll_attribute(
                 textbox, self.model.npc.all_attributes_dict[attribute_name]
             )
             self.view.bind_reroll_single_attribute_button(
