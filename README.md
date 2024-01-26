@@ -1,4 +1,4 @@
-# Branch TODO list
+# 
 - MVC architecture
     - model.py will house handle the data
     - view.py will handle the display
