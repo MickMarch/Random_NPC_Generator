@@ -55,10 +55,26 @@ class NpcGenerator(tk.Tk):
             compound="left",
         )
 
+    def _create_menubar(self) -> None:
+        self.menubar = tk.Menu(self)
+        self.file_menu = tk.Menu(self.menubar, tearoff=0)
+        self.file_menu.add_command(label="Save")
+        self.file_menu.add_command(label="Save As...")
+        self.file_menu.add_command(label="Load NPC...")
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label=f"Exit {self.title}")
+        self.menubar.add_cascade(label="File", menu=self.file_menu)
+        self.config(menu=self.menubar)
+
     def bind_reroll_single_attribute_button(
         self, button: ttk.Button, callback: Callable[..., Any]
     ) -> None:
         button.configure(command=callback)
+
+    def bind_action_to_menu_option(
+        self, menubar: tk.Menu, menu_label: str, callback: Callable[..., Any]
+    ) -> None:
+        menubar.entryconfig(menu_label, command=callback)
 
     def _create_attribute_row(
         self, root, attribute_name: str, attribute: NpcAttribute
@@ -91,6 +107,7 @@ class NpcGenerator(tk.Tk):
             self.update_attribute(textbox_update[0], textbox_update[1])
 
     def create_ui(self) -> None:
+        self._create_menubar()
         npc_frame = ttk.Frame(self)
         npc_frame.pack()
         self.all_attribute_rows_dict = self._create_attribute_row_dict(
