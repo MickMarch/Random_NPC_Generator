@@ -38,17 +38,18 @@ class Controller:
         npc_attribute.randomize_attribute()
         self.view.update_attribute(textbox, npc_attribute.current_attribute)
 
-    def save_npc(self):
+    def save_npc(self) -> None:
         self.model.save_npc_to_json()
 
-    def save_as_npc(self):
+    def save_as_npc(self) -> None:
         self.model.save_as_npc_to_json()
 
-    def load_npc(self):
+    def load_npc(self) -> None:
         self.model.load_npc_from_json()
 
-    def exit(self):
-        print("Exited App")
+    def exit(self) -> None:
+        self.save_npc()
+        exit()
 
     def run(self) -> None:
         self.view.mainloop()
