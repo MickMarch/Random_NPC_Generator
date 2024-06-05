@@ -39,4 +39,10 @@ class Model:
         return json.dumps(self.get_all_attributes(), indent=4)
 
     def save_npc_to_json(self):
-        ...
+        print("Saved NPC")
+
+    def save_as_npc_to_json(self):
+        print("Saved As NPC")
+
+    def load_npc_from_json(self):
+        print("Loaded NPC")

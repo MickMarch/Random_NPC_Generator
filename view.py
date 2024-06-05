@@ -4,6 +4,7 @@ from tkinter import Text, ttk, PhotoImage
 from typing import List, Union, Callable, Any, Dict
 
 from model import Model, NpcAttribute
+from menu_classes import Menu_Labels
 
 TITLE = "NPC Generator"
 BUTTON_IMAGE_PATH = "assets/dice.gif"
@@ -58,11 +59,11 @@ class NpcGenerator(tk.Tk):
     def _create_menubar(self) -> None:
         self.menubar = tk.Menu(self)
         self.file_menu = tk.Menu(self.menubar, tearoff=0)
-        self.file_menu.add_command(label="Save")
-        self.file_menu.add_command(label="Save As...")
-        self.file_menu.add_command(label="Load NPC...")
+        self.file_menu.add_command(label=Menu_Labels.save)
+        self.file_menu.add_command(label=Menu_Labels.save_as)
+        self.file_menu.add_command(label=Menu_Labels.load_npc)
         self.file_menu.add_separator()
-        self.file_menu.add_command(label=f"Exit {self.title}")
+        self.file_menu.add_command(label=Menu_Labels.exit)
         self.menubar.add_cascade(label="File", menu=self.file_menu)
         self.config(menu=self.menubar)
 

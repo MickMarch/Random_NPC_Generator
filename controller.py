@@ -1,5 +1,6 @@
 from model import Model, NpcAttribute
 from view import NpcGenerator
+from menu_classes import Menu_Labels
 
 from tkinter import Text
 
@@ -20,9 +21,34 @@ class Controller:
                 callback,
             )
 
+        self.view.bind_action_to_menu_option(
+            self.view.file_menu, Menu_Labels.save, self.save_npc
+        )
+        self.view.bind_action_to_menu_option(
+            self.view.file_menu, Menu_Labels.save_as, self.save_as_npc
+        )
+        self.view.bind_action_to_menu_option(
+            self.view.file_menu, Menu_Labels.load_npc, self.load_npc
+        )
+        self.view.bind_action_to_menu_option(
+            self.view.file_menu, Menu_Labels.exit, self.exit
+        )
+
     def reroll_attribute(self, textbox: Text, npc_attribute: NpcAttribute) -> None:
         npc_attribute.randomize_attribute()
         self.view.update_attribute(textbox, npc_attribute.current_attribute)
+
+    def save_npc(self):
+        self.model.save_npc_to_json()
+
+    def save_as_npc(self):
+        self.model.save_as_npc_to_json()
+
+    def load_npc(self):
+        self.model.load_npc_from_json()
+
+    def exit(self):
+        print("Exited App")
 
     def run(self) -> None:
         self.view.mainloop()
