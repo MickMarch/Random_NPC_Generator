@@ -1,6 +1,7 @@
-from model import Model
-from view import NpcGenerator
-from controller import Controller
+from scripts.mvc.model import Model
+from scripts.mvc.view import NpcGenerator
+from scripts.mvc.controller import Controller
+
 
 model = Model()
 view = NpcGenerator(model)

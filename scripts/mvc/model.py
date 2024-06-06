@@ -1,4 +1,4 @@
-from npc_data_classes import NpcData, NpcAttribute
+from ..project_classes.npc_data_classes import NpcData, NpcAttribute
 from tkinter import filedialog
 import json
 import os

@@ -40,7 +40,7 @@ class NpcCombinedAttribute(NpcAttribute):
 
 class NpcData:
     def __init__(self) -> None:
-        with open("data/npc_data.json", "r") as file:
+        with open("res/data/npc_data.json", "r") as file:
             self.npc_json_dict = json.load(file)
 
         self.all_attributes_dict = {

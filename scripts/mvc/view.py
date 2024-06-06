@@ -3,11 +3,11 @@ from tkinter import Text, ttk, PhotoImage
 
 from typing import List, Union, Callable, Any, Dict
 
-from model import Model, NpcAttribute
-from menu_classes import Menu_Labels
+from .model import Model, NpcAttribute
+from ..project_classes.menu_classes import Menu_Labels
 
 TITLE = "NPC Generator"
-BUTTON_IMAGE_PATH = "assets/dice.gif"
+BUTTON_IMAGE_PATH = "res/assets/dice.gif"
 WINDOW_HEIGHT = 580
 WINDOW_WIDTH = 600
 WINDOW_X_SHIFT = 350

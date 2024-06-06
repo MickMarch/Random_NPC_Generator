@@ -1,6 +1,6 @@
-from model import Model, NpcAttribute
-from view import NpcGenerator
-from menu_classes import Menu_Labels
+from .model import Model, NpcAttribute
+from .view import NpcGenerator
+from ..project_classes.menu_classes import Menu_Labels
 
 from tkinter import Text
 
