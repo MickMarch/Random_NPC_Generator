@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Text, ttk, PhotoImage
+from tkinter import Text, ttk, PhotoImage, messagebox
 
 from typing import List, Union, Callable, Any, Dict
 
@@ -8,7 +8,7 @@ from ..project_classes.menu_classes import Menu_Labels
 
 TITLE = "NPC Generator"
 BUTTON_IMAGE_PATH = "res/assets/dice.gif"
-WINDOW_HEIGHT = 580
+WINDOW_HEIGHT = 550
 WINDOW_WIDTH = 600
 WINDOW_X_SHIFT = 350
 WINDOW_Y_SHIFT = 80
@@ -32,8 +32,17 @@ class NpcGenerator(tk.Tk):
         self.BUTTON_IMAGE = PhotoImage(file=BUTTON_IMAGE_PATH)
         self.model = model
         self.title = TITLE
-        self.dimensions = DIMENSIONS
+        # self.geometry(DIMENSIONS)
         self.create_ui()
+        self.center_window()
+
+    def center_window(self):
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width // 2) - (WINDOW_WIDTH // 2)
+        y = (screen_height // 2) - (WINDOW_HEIGHT // 2)
+
+        self.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
 
     def _create_label(
         self, root: ttk.Frame, attribute_name: str, attribute: NpcAttribute
@@ -119,3 +128,7 @@ class NpcGenerator(tk.Tk):
             row_items[0].grid(row=row_index, column=0, padx=10, sticky="e")
             row_items[1].grid(row=row_index, column=1)
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
+
+    def show_yes_no_dialog(self, title: str, message: str) -> bool:
+        answer = messagebox.askyesno(title, message)
+        return answer

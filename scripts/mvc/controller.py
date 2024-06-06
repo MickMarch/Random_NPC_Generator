@@ -9,6 +9,7 @@ class Controller:
     def __init__(self, model: Model, view: NpcGenerator):
         self.model = model
         self.view = view
+        self.view.protocol("WM_DELETE_WINDOW", self.exit)
         # TODO add loop to bind reroll_attribute() to all buttons
         for attribute_name, attribute_row in self.view.all_attribute_rows_dict.items():
             textbox = attribute_row[1]
@@ -45,10 +46,19 @@ class Controller:
         self.model.save_as_npc_to_json()
 
     def load_npc(self) -> None:
+        if self.view.show_yes_no_dialog(
+            "Save Before Loading?",
+            "Would you like to save this NPC before loading another?",
+        ):
+            self.save_npc()
         self.model.load_npc_from_json()
 
     def exit(self) -> None:
-        self.save_npc()
+        if self.view.show_yes_no_dialog(
+            "Save Before Exiting?",
+            "Would you like to save this NPC before closing the application?",
+        ):
+            self.save_npc()
         exit()
 
     def run(self) -> None:
