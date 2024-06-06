@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Text, ttk, PhotoImage, messagebox
+from tkinter import Text, ttk, PhotoImage, messagebox, filedialog
 
 from typing import List, Union, Callable, Any, Dict
 
@@ -132,3 +132,13 @@ class NpcGenerator(tk.Tk):
     def show_yes_no_dialog(self, title: str, message: str) -> bool:
         answer = messagebox.askyesno(title, message)
         return answer
+
+    def show_ask_save_as_file_dialog(
+        self, initialdir: str, initialfile: str, file_ext: str
+    ):
+        file_path = filedialog.asksaveasfilename(
+            initialdir=initialdir,
+            initialfile=initialfile + file_ext,
+            title="Save As...",
+        )
+        return file_path

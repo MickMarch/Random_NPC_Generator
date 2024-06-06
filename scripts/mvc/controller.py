@@ -43,7 +43,12 @@ class Controller:
         self.model.save_npc_to_json()
 
     def save_as_npc(self) -> None:
-        self.model.save_as_npc_to_json()
+        file_path = self.view.show_ask_save_as_file_dialog(
+            self.model.save_folder_path,
+            self.model.get_attribute(self.model.npc.all_attributes_dict["Full Name"]),
+            file_ext=".json",
+        )
+        self.model.save_as_npc_to_json(file_path)
 
     def load_npc(self) -> None:
         if self.view.show_yes_no_dialog(
