@@ -60,5 +60,10 @@ class Model:
         self._export_json(file_name, folder_path)
         print("Saved As NPC")
 
-    def load_npc_from_json(self):
-        print("Loaded NPC")
+    def load_npc_from_json(self, file_path):
+        with open(file_path, "r") as file:
+            npc_dict = json.load(file)
+        for attribute_name, attribute_content in npc_dict.items():
+            self.set_new_attribute(
+                self.npc.all_attributes_dict[attribute_name], attribute_content
+            )

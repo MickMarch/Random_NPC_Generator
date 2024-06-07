@@ -112,9 +112,9 @@ class NpcGenerator(tk.Tk):
         textbox.config(state="disabled")
         textbox.tag_add("center text", 1.0, "end")
 
-    def update_npc(self, textbox_updates: list[list[tk.Text, str]]):
-        for textbox_update in textbox_updates:
-            self.update_attribute(textbox_update[0], textbox_update[1])
+    # def update_npc(self, textbox_updates: list[list[tk.Text, str]]):
+    #     for textbox_update in textbox_updates:
+    #         self.update_attribute(textbox_update[0], textbox_update[1])
 
     def create_ui(self) -> None:
         self._create_menubar()
@@ -129,6 +129,15 @@ class NpcGenerator(tk.Tk):
             row_items[1].grid(row=row_index, column=1)
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
 
+    def update_npc(self):
+        for attribute_name, attribute_row in self.all_attribute_rows_dict.items():
+            self.update_attribute(
+                attribute_row[1],
+                self.model.get_attribute(
+                    self.model.npc.all_attributes_dict[attribute_name]
+                ),
+            )
+
     def show_yes_no_dialog(self, title: str, message: str) -> bool:
         answer = messagebox.askyesno(title, message)
         return answer
@@ -141,4 +150,8 @@ class NpcGenerator(tk.Tk):
             initialfile=initialfile + file_ext,
             title="Save As...",
         )
+        return file_path
+
+    def show_ask_open_file_dialog(self, initialdir: str):
+        file_path = filedialog.askopenfilename(initialdir=initialdir)
         return file_path

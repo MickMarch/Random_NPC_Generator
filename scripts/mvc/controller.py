@@ -7,6 +7,7 @@ from tkinter import Text
 
 class Controller:
     def __init__(self, model: Model, view: NpcGenerator):
+        self.has_saved = False
         self.model = model
         self.view = view
         self.view.protocol("WM_DELETE_WINDOW", self.exit)
@@ -38,9 +39,14 @@ class Controller:
     def reroll_attribute(self, textbox: Text, npc_attribute: NpcAttribute) -> None:
         npc_attribute.randomize_attribute()
         self.view.update_attribute(textbox, npc_attribute.current_attribute)
+        self.has_saved = False
 
     def save_npc(self) -> None:
-        self.model.save_npc_to_json()
+        if not self.has_saved:
+            self.model.save_npc_to_json()
+            self.has_saved = True
+        else:
+            print("File is already saved.")
 
     def save_as_npc(self) -> None:
         file_path = self.view.show_ask_save_as_file_dialog(
@@ -51,15 +57,19 @@ class Controller:
         self.model.save_as_npc_to_json(file_path)
 
     def load_npc(self) -> None:
-        if self.view.show_yes_no_dialog(
+        if not self.has_saved and self.view.show_yes_no_dialog(
             "Save Before Loading?",
             "Would you like to save this NPC before loading another?",
         ):
             self.save_npc()
-        self.model.load_npc_from_json()
+
+        file_path = self.view.show_ask_open_file_dialog(self.model.save_folder_path)
+        self.model.load_npc_from_json(file_path)
+        self.view.update_npc()
+        self.has_saved = True
 
     def exit(self) -> None:
-        if self.view.show_yes_no_dialog(
+        if not self.has_saved and self.view.show_yes_no_dialog(
             "Save Before Exiting?",
             "Would you like to save this NPC before closing the application?",
         ):
