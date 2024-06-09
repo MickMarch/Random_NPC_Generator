@@ -61,6 +61,15 @@ class NpcGenerator(tk.Tk):
         return ttk.Button(
             root,
             text=button_text,
+            compound="left",
+        )
+
+    def _create_button_dice_image(
+        self, root: ttk.Frame, button_text: str
+    ) -> ttk.Button:
+        return ttk.Button(
+            root,
+            text=button_text,
             image=self.BUTTON_IMAGE,
             compound="left",
         )
@@ -92,11 +101,19 @@ class NpcGenerator(tk.Tk):
         return [
             self._create_label(root, attribute_name, attribute),
             self._create_textbox(root, attribute),
-            self._create_button(root, " Re-Roll"),
+            self._create_button_dice_image(root, " Re-Roll"),
+        ]
+
+    ## TODO
+    def _create_reroll_all_reset_row(self, root) -> list[ttk.Button]:
+        return [
+            self._create_button_dice_image(root, " Re-Roll All"),
+            self._create_button(root, " Undo"),
+            self._create_button(root, " Redo"),
         ]
 
     def _create_reroll_all_row(self, root) -> List[ttk.Button]:
-        return self._create_button(root)
+        return self._create_button_dice_image(root)
 
     def _create_attribute_row_dict(
         self, root, all_attributes_dict: dict[str, NpcAttribute]
