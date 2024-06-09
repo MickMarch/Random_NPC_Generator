@@ -104,7 +104,6 @@ class NpcGenerator(tk.Tk):
             self._create_button_dice_image(root, " Re-Roll"),
         ]
 
-    ## TODO
     def _create_reroll_all_reset_row(self, root) -> list[ttk.Button]:
         return [
             self._create_button_dice_image(root, " Re-Roll All"),
@@ -129,10 +128,6 @@ class NpcGenerator(tk.Tk):
         textbox.config(state="disabled")
         textbox.tag_add("center text", 1.0, "end")
 
-    # def update_npc(self, textbox_updates: list[list[tk.Text, str]]):
-    #     for textbox_update in textbox_updates:
-    #         self.update_attribute(textbox_update[0], textbox_update[1])
-
     def create_ui(self) -> None:
         self._create_menubar()
         npc_frame = ttk.Frame(self)
@@ -140,6 +135,8 @@ class NpcGenerator(tk.Tk):
         self.all_attribute_rows_dict = self._create_attribute_row_dict(
             npc_frame, self.model.npc.all_attributes_dict
         )
+
+        # TODO - Refactor row creation
 
         for row_index, row_items in enumerate(self.all_attribute_rows_dict.values()):
             row_items[0].grid(row=row_index, column=0, padx=10, sticky="e")
