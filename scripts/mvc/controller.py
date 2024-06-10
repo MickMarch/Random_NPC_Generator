@@ -11,17 +11,20 @@ class Controller:
         self.model = model
         self.view = view
         self.view.protocol("WM_DELETE_WINDOW", self.exit)
-        # TODO add loop to bind reroll_attribute() to all buttons
         for attribute_name, attribute_row in self.view.all_attribute_rows_dict.items():
             textbox = attribute_row[1]
             button = attribute_row[2]
             callback = lambda textbox=textbox, attribute_name=attribute_name: self.reroll_attribute(
                 textbox, self.model.npc.all_attributes_dict[attribute_name]
             )
-            self.view.bind_reroll_single_attribute_button(
+            self.view.bind_command_to_button(
                 button,
                 callback,
             )
+
+        self.view.bind_command_to_button(
+            self.view.undo_reroll_all_redo_row[1], self.reroll_all_attributes
+        )
 
         self.view.bind_action_to_menu_option(
             self.view.file_menu, Menu_Labels.save, self.save_npc
@@ -40,6 +43,10 @@ class Controller:
         npc_attribute.randomize_attribute()
         self.view.update_attribute(textbox, npc_attribute.current_attribute)
         self.has_saved = False
+
+    def reroll_all_attributes(self) -> None:
+        self.model.set_all_rand_new_attributes()
+        self.view.update_npc()
 
     def save_npc(self) -> None:
         if not self.has_saved:
