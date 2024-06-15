@@ -1,6 +1,7 @@
 from ..project_classes.npc_data_classes import NpcData, NpcAttribute
 import json
 import os
+import copy
 
 SAVE_FOLDER_NAME = "Saved NPCs"
 
@@ -10,6 +11,9 @@ class Model:
         self.npc = NpcData()
         self.save_folder_path = os.path.join(os.path.curdir, SAVE_FOLDER_NAME)
         self._ensure_directory_exists(self.save_folder_path)
+        self.history_records = []
+        self.history_tracker = 0
+        self.create_history_record()
 
     def _directory_exists(self, directory: str) -> bool:
         return os.path.exists(directory)
@@ -17,6 +21,34 @@ class Model:
     def _ensure_directory_exists(self, directory: str) -> None:
         if not self._directory_exists(directory):
             os.makedirs(directory)
+
+    @property
+    def can_undo(self):
+        return self.history_tracker > 1
+
+    @property
+    def can_redo(self):
+        return self.history_tracker < len(self.history_records)
+
+    def create_history_record(self):
+        if self.history_tracker < len(self.history_records):
+            self.history_records = self.history_records[: self.history_tracker]
+        self.history_records.append(copy.deepcopy(self.npc))
+        self.history_tracker += 1
+
+    def previous_history_record(self):
+        if self.can_undo:
+            self.history_tracker -= 1
+            self.npc = copy.deepcopy(self.history_records[self.history_tracker - 1])
+        else:
+            print("No more undo actions. At the beginning of time.")
+
+    def next_history_record(self):
+        if self.can_redo:
+            self.history_tracker += 1
+            self.npc = copy.deepcopy(self.history_records[self.history_tracker - 1])
+        else:
+            print("No more redo actions. This is the furthest.")
 
     def get_attribute(self, attribute: NpcAttribute) -> str:
         return attribute.current_attribute

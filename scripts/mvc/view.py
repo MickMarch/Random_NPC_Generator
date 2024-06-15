@@ -29,8 +29,6 @@ class NpcGenerator(tk.Tk):
         screen_height = self.winfo_screenheight()
         w_width = self.winfo_width()
         w_height = self.winfo_height()
-        print(w_width)
-        print(screen_width)
         x = (screen_width // 2) - (w_width // 2)
         y = (screen_height // 2) - (w_height // 2)
 
@@ -126,7 +124,7 @@ class NpcGenerator(tk.Tk):
 
     def create_ui(self) -> None:
         self._create_menubar()
-        self.npc_frame = ttk.Frame(self)
+        self.npc_frame = ttk.Frame(self, padding=20)
         self.npc_frame.pack()
         self.all_attribute_rows_dict = self._create_attribute_row_dict(
             self.npc_frame, self.model.npc.all_attributes_dict
@@ -137,7 +135,10 @@ class NpcGenerator(tk.Tk):
             row_items[1].grid(row=row_index, column=1)
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
 
-        self.utility_button_frame = ttk.Frame(self, borderwidth=5, relief=tk.GROOVE)
+        self.separator_01 = ttk.Separator(self, orient="horizontal")
+        self.separator_01.pack(fill=tk.X, padx=10)
+
+        self.utility_button_frame = ttk.Frame(self, padding=15)
         self.utility_button_frame.pack()
         self.utility_button_rows = []
 
