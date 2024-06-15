@@ -11,35 +11,65 @@ class Controller:
         self.model = model
         self.view = view
         self.view.protocol("WM_DELETE_WINDOW", self.exit)
-        # TODO add loop to bind reroll_attribute() to all buttons
         for attribute_name, attribute_row in self.view.all_attribute_rows_dict.items():
             textbox = attribute_row[1]
             button = attribute_row[2]
             callback = lambda textbox=textbox, attribute_name=attribute_name: self.reroll_attribute(
                 textbox, self.model.npc.all_attributes_dict[attribute_name]
             )
-            self.view.bind_reroll_single_attribute_button(
+            self.view.bind_command_to_button(
                 button,
                 callback,
             )
 
+        self.view.bind_command_to_button(
+            self.view.undo_reroll_all_redo_row[1], self.reroll_all_attributes
+        )
+
         self.view.bind_action_to_menu_option(
             self.view.file_menu, Menu_Labels.save, self.save_npc
+        )
+        self.view.bind_command_to_button(
+            self.view.utility_button_rows[1][0], self.save_npc
         )
         self.view.bind_action_to_menu_option(
             self.view.file_menu, Menu_Labels.save_as, self.save_as_npc
         )
+        self.view.bind_command_to_button(
+            self.view.utility_button_rows[1][1], self.save_as_npc
+        )
         self.view.bind_action_to_menu_option(
             self.view.file_menu, Menu_Labels.load_npc, self.load_npc
+        )
+        self.view.bind_command_to_button(
+            self.view.utility_button_rows[1][2], self.load_npc
         )
         self.view.bind_action_to_menu_option(
             self.view.file_menu, Menu_Labels.exit, self.exit
         )
 
+        self.view.bind_command_to_button(self.view.utility_button_rows[0][0], self.undo)
+
+        self.view.bind_command_to_button(self.view.utility_button_rows[0][2], self.redo)
+
+    def undo(self):
+        self.model.previous_history_record()
+        self.view.update_npc()
+
+    def redo(self):
+        self.model.next_history_record()
+        self.view.update_npc()
+
     def reroll_attribute(self, textbox: Text, npc_attribute: NpcAttribute) -> None:
         npc_attribute.randomize_attribute()
         self.view.update_attribute(textbox, npc_attribute.current_attribute)
         self.has_saved = False
+        self.model.create_history_record()
+
+    def reroll_all_attributes(self) -> None:
+        self.model.set_all_rand_new_attributes()
+        self.view.update_npc()
+        self.model.create_history_record()
 
     def save_npc(self) -> None:
         if not self.has_saved:
@@ -67,6 +97,7 @@ class Controller:
         self.model.load_npc_from_json(file_path)
         self.view.update_npc()
         self.has_saved = True
+        self.model.create_history_record()
 
     def exit(self) -> None:
         if not self.has_saved and self.view.show_yes_no_dialog(
@@ -77,4 +108,6 @@ class Controller:
         exit()
 
     def run(self) -> None:
+        self.view.update_idletasks()
+        self.view.update()
         self.view.mainloop()

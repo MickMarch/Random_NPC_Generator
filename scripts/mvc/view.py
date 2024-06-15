@@ -8,19 +8,6 @@ from ..project_classes.menu_classes import Menu_Labels
 
 TITLE = "NPC Generator"
 BUTTON_IMAGE_PATH = "res/assets/dice.gif"
-WINDOW_HEIGHT = 550
-WINDOW_WIDTH = 600
-WINDOW_X_SHIFT = 350
-WINDOW_Y_SHIFT = 80
-DIMENSIONS = (
-    str(WINDOW_WIDTH)
-    + "x"
-    + str(WINDOW_HEIGHT)
-    + "+"
-    + str(WINDOW_X_SHIFT)
-    + "+"
-    + str(WINDOW_Y_SHIFT)
-)
 TEXTBOX_WIDTH = 30
 TEXTBOX_HEIGHT = 3
 LABEL_FONT = ("Arial Black", 13)
@@ -32,17 +19,20 @@ class NpcGenerator(tk.Tk):
         self.BUTTON_IMAGE = PhotoImage(file=BUTTON_IMAGE_PATH)
         self.model = model
         self.title = TITLE
-        # self.geometry(DIMENSIONS)
         self.create_ui()
         self.center_window()
 
     def center_window(self):
+        self.pack_propagate(True)
+        self.update_idletasks()
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
-        x = (screen_width // 2) - (WINDOW_WIDTH // 2)
-        y = (screen_height // 2) - (WINDOW_HEIGHT // 2)
+        w_width = self.winfo_width()
+        w_height = self.winfo_height()
+        x = (screen_width // 2) - (w_width // 2)
+        y = (screen_height // 2) - (w_height // 2)
 
-        self.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x}+{y}")
+        self.geometry(f"+{x}+{y}")
 
     def _create_label(
         self, root: ttk.Frame, attribute_name: str, attribute: NpcAttribute
@@ -61,6 +51,15 @@ class NpcGenerator(tk.Tk):
         return ttk.Button(
             root,
             text=button_text,
+            compound="left",
+        )
+
+    def _create_button_dice_image(
+        self, root: ttk.Frame, button_text: str
+    ) -> ttk.Button:
+        return ttk.Button(
+            root,
+            text=button_text,
             image=self.BUTTON_IMAGE,
             compound="left",
         )
@@ -76,7 +75,7 @@ class NpcGenerator(tk.Tk):
         self.menubar.add_cascade(label="File", menu=self.file_menu)
         self.config(menu=self.menubar)
 
-    def bind_reroll_single_attribute_button(
+    def bind_command_to_button(
         self, button: ttk.Button, callback: Callable[..., Any]
     ) -> None:
         button.configure(command=callback)
@@ -92,11 +91,22 @@ class NpcGenerator(tk.Tk):
         return [
             self._create_label(root, attribute_name, attribute),
             self._create_textbox(root, attribute),
-            self._create_button(root, " Re-Roll"),
+            self._create_button_dice_image(root, " Re-Roll"),
         ]
 
-    def _create_reroll_all_row(self, root) -> List[ttk.Button]:
-        return self._create_button(root)
+    def _create_undo_reroll_all_redo_row(self, root) -> list[ttk.Button]:
+        return [
+            self._create_button(root, "Undo"),
+            self._create_button_dice_image(root, " Re-Roll All"),
+            self._create_button(root, "Redo"),
+        ]
+
+    def _create_save_load_row(self, root) -> list[ttk.Button]:
+        return [
+            self._create_button(root, "Save"),
+            self._create_button(root, "Save As..."),
+            self._create_button(root, "Load..."),
+        ]
 
     def _create_attribute_row_dict(
         self, root, all_attributes_dict: dict[str, NpcAttribute]
@@ -112,22 +122,38 @@ class NpcGenerator(tk.Tk):
         textbox.config(state="disabled")
         textbox.tag_add("center text", 1.0, "end")
 
-    # def update_npc(self, textbox_updates: list[list[tk.Text, str]]):
-    #     for textbox_update in textbox_updates:
-    #         self.update_attribute(textbox_update[0], textbox_update[1])
-
     def create_ui(self) -> None:
         self._create_menubar()
-        npc_frame = ttk.Frame(self)
-        npc_frame.pack()
+        self.npc_frame = ttk.Frame(self, padding=20)
+        self.npc_frame.pack()
         self.all_attribute_rows_dict = self._create_attribute_row_dict(
-            npc_frame, self.model.npc.all_attributes_dict
+            self.npc_frame, self.model.npc.all_attributes_dict
         )
 
         for row_index, row_items in enumerate(self.all_attribute_rows_dict.values()):
             row_items[0].grid(row=row_index, column=0, padx=10, sticky="e")
             row_items[1].grid(row=row_index, column=1)
             row_items[2].grid(row=row_index, column=2, padx=10, sticky="w")
+
+        self.separator_01 = ttk.Separator(self, orient="horizontal")
+        self.separator_01.pack(fill=tk.X, padx=10)
+
+        self.utility_button_frame = ttk.Frame(self, padding=15)
+        self.utility_button_frame.pack()
+        self.utility_button_rows = []
+
+        self.undo_reroll_all_redo_row = self._create_undo_reroll_all_redo_row(
+            self.utility_button_frame
+        )
+        self.save_load_row = self._create_save_load_row(self.utility_button_frame)
+
+        self.utility_button_rows.append(self.undo_reroll_all_redo_row)
+        self.utility_button_rows.append(self.save_load_row)
+
+        for row_index, button_row in enumerate(self.utility_button_rows):
+            button_row[0].grid(row=row_index, column=0, padx=10, pady=5, sticky="w")
+            button_row[1].grid(row=row_index, column=1, pady=5)
+            button_row[2].grid(row=row_index, column=2, padx=10, pady=5, sticky="e")
 
     def update_npc(self):
         for attribute_name, attribute_row in self.all_attribute_rows_dict.items():
