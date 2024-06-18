@@ -2,6 +2,19 @@ import random
 import json
 
 
+class AttributeKeys:
+    name = "Full Name"
+    race = "Race"
+    pronoun = "Pronoun"
+    build = "Build"
+    age = "Age"
+    hair = "Hairstyle"
+    details = "Details"
+    wants = "Wants/Needs"
+    secret = "Secret"
+    inventory = "Inventory"
+
+
 class NpcAttribute:
     def __init__(self):
         self.attribute_list: list[str] = ...
@@ -44,16 +57,18 @@ class NpcData:
             self.npc_json_dict = json.load(file)
 
         self.all_attributes_dict = {
-            "Full Name": NpcCombinedAttribute(
+            AttributeKeys.name: NpcCombinedAttribute(
                 self.npc_json_dict["first_names"], self.npc_json_dict["last_names"]
             ),
-            "Race": NpcSingleAttribute(self.npc_json_dict["races"]),
-            "Pronoun": NpcSingleAttribute(self.npc_json_dict["pronouns"]),
-            "Build": NpcSingleAttribute(self.npc_json_dict["builds"]),
-            "Age": NpcSingleAttribute(self.npc_json_dict["ages"]),
-            "Hairstyle": NpcSingleAttribute(self.npc_json_dict["hairstyles"]),
-            "Details": NpcSingleAttribute(self.npc_json_dict["details"]),
-            "Wants/Needs": NpcSingleAttribute(self.npc_json_dict["wants_needs"]),
-            "Secret": NpcSingleAttribute(self.npc_json_dict["secrets"]),
-            "Inventory": NpcSingleAttribute(self.npc_json_dict["inventory"]),
+            AttributeKeys.race: NpcSingleAttribute(self.npc_json_dict["races"]),
+            AttributeKeys.pronoun: NpcSingleAttribute(self.npc_json_dict["pronouns"]),
+            AttributeKeys.build: NpcSingleAttribute(self.npc_json_dict["builds"]),
+            AttributeKeys.age: NpcSingleAttribute(self.npc_json_dict["ages"]),
+            AttributeKeys.hair: NpcSingleAttribute(self.npc_json_dict["hairstyles"]),
+            AttributeKeys.details: NpcSingleAttribute(self.npc_json_dict["details"]),
+            AttributeKeys.wants: NpcSingleAttribute(self.npc_json_dict["wants_needs"]),
+            AttributeKeys.secret: NpcSingleAttribute(self.npc_json_dict["secrets"]),
+            AttributeKeys.inventory: NpcSingleAttribute(
+                self.npc_json_dict["inventory"]
+            ),
         }
